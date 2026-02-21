@@ -20,3 +20,7 @@ echo "> Shrinking"
 upx -9 --ultra-brute --best "./$file"
 
 echo "> Done."
+
+cd /home/ramak/projects/pshash || exit
+git checkout master
+cd "$curdir" || exit
