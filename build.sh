@@ -3,13 +3,11 @@
 ver="$1"
 file="pshash-static.$ver.x86_64-linux"
 
-curdir="$(pwd)"
-cd /home/ramak/projects/pshash || exit
-git checkout "v$ver"
-cd "$curdir" || exit
+cp -r /home/ramak/projects/pshash ./temp || exit
+( cd temp || exit; git checkout "v$ver")
 
 echo "> Building the static executable"
-nix build ../pshash#pshash-static --log-format internal-json |& nom --json || exit
+nix build ./temp#pshash-static --log-format internal-json |& nom --json || exit
 notify-send "built version $ver of pshash"
 
 echo "> Moving"
@@ -21,6 +19,4 @@ upx -9 --ultra-brute --best "./$file"
 
 echo "> Done."
 
-cd /home/ramak/projects/pshash || exit
-git checkout master
-cd "$curdir" || exit
+rm -rf ./temp
